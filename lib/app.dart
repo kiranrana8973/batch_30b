@@ -1,4 +1,6 @@
 import 'package:first_flutter_app/view/arithmetic_view.dart';
+import 'package:first_flutter_app/view/dashboard_view.dart';
+import 'package:first_flutter_app/view/si_vew.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -6,9 +8,14 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ArithmeticView(),
+      initialRoute: '/siRoute',
+      routes: {
+        '/': (context) => const DashboardView(),
+        '/arithmeticRoute': (context) => const ArithmeticView(),
+        '/siRoute': (context) => const SiView(),
+      },
     );
   }
 }
