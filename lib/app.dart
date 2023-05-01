@@ -1,5 +1,6 @@
 import 'package:first_flutter_app/view/arithmetic_view.dart';
 import 'package:first_flutter_app/view/dashboard_view.dart';
+import 'package:first_flutter_app/view/result_view.dart';
 import 'package:first_flutter_app/view/si_vew.dart';
 import 'package:flutter/material.dart';
 
@@ -10,11 +11,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/siRoute',
+      initialRoute: '/',
       routes: {
         '/': (context) => const DashboardView(),
         '/arithmeticRoute': (context) => const ArithmeticView(),
         '/siRoute': (context) => const SiView(),
+        '/resultRoute': (context) => const ResultView(),
       },
     );
   }

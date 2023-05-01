@@ -17,18 +17,31 @@ class _ArithmeticViewState extends State<ArithmeticView> {
   int first = 0;
   int second = 0;
   int result = 0;
+
   Arithmetic arithmetic = Arithmetic();
 
   void add() {
     setState(() {
       result = arithmetic.add(first, second);
     });
+
+    Navigator.pushNamed(
+      context,
+      '/resultRoute',
+      arguments: result,
+    );
   }
 
   void sub() {
     setState(() {
       result = arithmetic.sub(first, second);
     });
+
+    Navigator.pushNamed(
+      context,
+      '/resultRoute',
+      arguments: result,
+    );
   }
 
   @override
@@ -40,7 +53,7 @@ class _ArithmeticViewState extends State<ArithmeticView> {
       body: Column(
         children: [
           gap,
-          TextField(
+          TextFormField(
             onChanged: (value) {
               first = int.parse(value);
             },
@@ -53,6 +66,12 @@ class _ArithmeticViewState extends State<ArithmeticView> {
                 ),
               ),
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
           ),
           gap,
           TextField(
