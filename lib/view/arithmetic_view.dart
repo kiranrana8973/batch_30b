@@ -14,7 +14,7 @@ class ArithmeticView extends StatefulWidget {
 
 class _ArithmeticViewState extends State<ArithmeticView> {
   var gap = const SizedBox(height: 12);
-  int first = 0;
+  final firstController = TextEditingController();
   int second = 0;
   int result = 0;
 
@@ -22,7 +22,7 @@ class _ArithmeticViewState extends State<ArithmeticView> {
 
   void add() {
     setState(() {
-      result = arithmetic.add(first, second);
+      result = arithmetic.add(int.parse(firstController.text), second);
     });
 
     Navigator.pushNamed(
@@ -34,7 +34,7 @@ class _ArithmeticViewState extends State<ArithmeticView> {
 
   void sub() {
     setState(() {
-      result = arithmetic.sub(first, second);
+      result = arithmetic.sub(int.parse(firstController.text), second);
     });
 
     Navigator.pushNamed(
@@ -44,81 +44,92 @@ class _ArithmeticViewState extends State<ArithmeticView> {
     );
   }
 
+  final meroKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Arithmetics'),
       ),
-      body: Column(
-        children: [
-          gap,
-          TextFormField(
-            onChanged: (value) {
-              first = int.parse(value);
-            },
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Enter first Number',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
+      body: Form(
+        key: meroKey,
+        child: Column(
+          children: [
+            gap,
+            TextFormField(
+              controller: firstController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Enter first Number',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
+            ),
+            gap,
+            TextField(
+              onChanged: (value) {
+                second = int.parse(value);
+              },
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Enter second Number',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
                 ),
               ),
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
-          ),
-          gap,
-          TextField(
-            onChanged: (value) {
-              second = int.parse(value);
-            },
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Enter second Number',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (meroKey.currentState!.validate()) {
+                    add();
+                  }
+                },
+                child: const Text('ADD'),
               ),
             ),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                add();
-              },
-              child: const Text('ADD'),
+            gap,
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  sub();
+                },
+                child: const Text('SUBTRACT'),
+              ),
             ),
-          ),
-          gap,
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                sub();
-              },
-              child: const Text('SUBTRACT'),
+            const SizedBox(height: 12),
+            Text(
+              'Result: $result',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'Result: $result',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    firstController.dispose();
+    super.dispose();
   }
 }
 
